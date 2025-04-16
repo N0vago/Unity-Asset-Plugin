@@ -1,0 +1,6 @@
+{
+  "backend": {
+    "endpoint": "https://cc-stvx-234-002-be-2786182950.europe-central2.run.app/api/v1/chat",
+    "tenant_id": "stvx-234-001"
+  }
+}
