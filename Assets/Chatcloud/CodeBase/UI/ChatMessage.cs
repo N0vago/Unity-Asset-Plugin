@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -8,16 +9,47 @@ namespace Chatcloud.CodeBase.UI
 {
     public class ChatMessage : MonoBehaviour
     {
-        [SerializeField] private TMP_Text text;
-        [SerializeField] private ContentSizeFitter _contentSizeFitter;
-        
+        [SerializeField] private TMP_Text messageText;
 
+        private Coroutine _coroutine;
+        private RectTransform _parent;
+
+        private void OnEnable()
+        {
+            _parent = GetComponentInParent<RectTransform>();
+            
+            LayoutRebuilder.MarkLayoutForRebuild(_parent);
+        }
+
+        public void ShowTypingDots()
+        {
+            _coroutine = StartCoroutine(AnimateDots());
+        }
         public void SetText(string message)
         {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+                _coroutine = null;
+            }
+            
             StringBuilder builder = new StringBuilder();
             builder.Append(message);
-            text.text = builder.ToString();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+            messageText.text = builder.ToString();
+            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_parent);
+        }
+        
+        private IEnumerator AnimateDots()
+        {
+            int dotCount = 0;
+
+            while (true)
+            {
+                dotCount = (dotCount + 1) % 3;
+                messageText.text = "." + new string('.', dotCount);
+                yield return new WaitForSeconds(0.5f);
+            }
         }
     }
 }

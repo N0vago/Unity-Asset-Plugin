@@ -23,7 +23,7 @@ namespace Chatcloud.CodeBase.Utils
         {
             int timestamp = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             string rnd = GenerateRandomString(10);
-            return $"{tenantId}_{timestamp}_{rnd}";
+            return $"{tenantId}_unity_{timestamp}_{rnd}";
         }
 
         public static string CombineTokensWithSpecialCheckHelper(string current, string[] tokens)
@@ -41,23 +41,22 @@ namespace Chatcloud.CodeBase.Utils
 
         public static string ConvertMarkdownToHtml(string text)
         {
-            // Convert markdown headers (# ... ######) into HTML header tags.
             text = Regex.Replace(text, @"^(#{1,6})\s*(.*)$", match =>
             {
                 int level = match.Groups[1].Value.Length;
                 string content = match.Groups[2].Value.Trim();
                 return $"<h{level}>{content}</h{level}>";
             }, RegexOptions.Multiline);
-            // Bold text.
+            
             text = Regex.Replace(text, @"\*\*(.*?)\*\*", "<span style=\"font-weight:600;\">$1</span>");
-            // Replace placeholder Ƿ with <br>.
+            
             text = text.Replace("Ƿ", "<br>");
-            // Newlines to <br>.
+            
             text = Regex.Replace(text, @"(\r\n|\r|\n)", "<br>");
-            // Markdown links.
+            
             text = Regex.Replace(text, @"\[([^\]]+)\]\((https?:\/\/[^\)]+)\)",
                 "<a href=\"$2\" target=\"_blank\" rel=\"noopener noreferrer\">$1</a>");
-            // Bare URLs.
+            
             text = Regex.Replace(text, @"(^|>)(\s*)((https?:\/\/|www\.)[^\s<]+)", match =>
             {
                 string prefix = match.Groups[1].Value;

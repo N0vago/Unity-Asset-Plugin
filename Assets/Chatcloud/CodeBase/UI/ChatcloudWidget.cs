@@ -2,12 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Chatcloud.CodeBase.Utils;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Chatcloud.CodeBase.UI
@@ -15,62 +19,82 @@ namespace Chatcloud.CodeBase.UI
     public class ChatcloudWidget : MonoBehaviour
     {
         [SerializeField] private Button toggleButton;
-        [SerializeField] private VerticalLayoutGroup contentField;
+        [SerializeField] private Transform messageContentField;
+        [SerializeField] private Transform samplesContentField;
+        
         [SerializeField] private ChatMessage chatMessagePrefab;
-        [SerializeField] private List<RequestSample> requestSamples;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private Button sendButton;
         
+        private ChatMessage _currentChatMessage;
+        private List<RequestSample> _requestSamples = new();
+
         private const string Endpoint = "https://cc-stvx-234-001-be-2786182950.europe-central2.run.app/api/v1/chat";
         private const string Tenate = "stvx-234-001";
 
         public async Task SendMessageToBackend(string endpoint, string userId, string msg, Action<string> onToken,
             Action onComplete = null)
         {
-            var payload = new Payload(userId, msg);
-            var jsonPayload = JsonUtility.ToJson(payload);
+            Payload payload = new Payload(userId, msg);
+            string jsonPayload = JsonUtility.ToJson(payload);
 
-            using var client = new HttpClient();
+            using HttpClient client = new HttpClient();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, endpoint)
             {
                 Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json")
             };
-
-            // Важно: HttpCompletionOption.ResponseHeadersRead позволяет начинать читать поток до завершения запроса
-            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            
+            using HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
             response.EnsureSuccessStatusCode();
 
-            await using var stream = await response.Content.ReadAsStreamAsync();
-            using var reader = new StreamReader(stream);
+            await using Stream stream = await response.Content.ReadAsStreamAsync();
+            using StreamReader reader = new StreamReader(stream);
 
             while (!reader.EndOfStream)
             {
-                var line = await reader.ReadLineAsync();
-                if (!string.IsNullOrEmpty(line))
+                string json = await reader.ReadLineAsync();
+
+                ReplyData line = JsonUtility.FromJson<ReplyData>(json);
+                
+                if (!string.IsNullOrEmpty(line.reply))
                 {
-                    Debug.Log("New line");
-                    onToken?.Invoke(line);
+                    onToken?.Invoke(TextUtils.ConvertMarkdownToHtml(line.reply));
                 }
             }
         }
 
         private void OnEnable()
         {
-            sendButton.onClick.AddListener(SendRequest);
+            _requestSamples = _requestSamples.Count == 0 ? GetRequestSamples() : _requestSamples;
+            
+            sendButton.onClick.AddListener(() => SendRequest(inputField.text));
+            
+            foreach (var requestSample in _requestSamples)
+            {
+                requestSample.OnSendRequest += SendRequest;
+            }
         }
-
-
+        
         private void OnDisable()
         {
-            sendButton.onClick.RemoveListener(SendRequest);
+            sendButton.onClick.RemoveAllListeners();
+            foreach (var requestSample in _requestSamples)
+            {
+                requestSample.OnSendRequest -= SendRequest;
+            }
         }
 
-        private void SendRequest()
+        private void SendRequest(string message)
         {
-            _ = SendMessageToBackend(Endpoint, TextUtils.GenerateUserId(Tenate), inputField.text,
+            _currentChatMessage = Instantiate(chatMessagePrefab, messageContentField.gameObject.transform);
+            
+            _currentChatMessage.ShowTypingDots();
+            
+            _ = SendMessageToBackend(Endpoint, TextUtils.GenerateUserId(Tenate), message,
                 DisplayMessage, Complete);
+            
             inputField.text = string.Empty;
         }
 
@@ -80,12 +104,12 @@ namespace Chatcloud.CodeBase.UI
 
         private void DisplayMessage(string message)
         {
-            ChatMessage chatMessage = Instantiate(chatMessagePrefab, contentField.gameObject.transform);
-            
-            chatMessage.SetText(TextUtils.ConvertMarkdownToHtml(message));
+            _currentChatMessage.SetText(TextUtils.ConvertMarkdownToHtml(message));
             
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         }
+
+        private List<RequestSample> GetRequestSamples() => samplesContentField.GetComponentsInChildren<RequestSample>().ToList();
 
         [Serializable]
         private class Payload
@@ -99,10 +123,11 @@ namespace Chatcloud.CodeBase.UI
                 this.message = message;
             }
         }
-    }
-    [Serializable]
-    public class ReplyData
-    {
-        public string reply;
+
+        [Serializable]
+        private class ReplyData
+        {
+            public string reply;
+        }
     }
 }
