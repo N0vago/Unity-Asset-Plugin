@@ -6,25 +6,6 @@ namespace Chatcloud.CodeBase.Utils
 {
     public static class TextUtils
     {
-        public static string GenerateRandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var random = new Random();
-            var result = new StringBuilder();
-            for (int i = 0; i < length; i++)
-            {
-                result.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return result.ToString();
-        }
-
-        public static string GenerateUserId(string tenantId)
-        {
-            int timestamp = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-            string rnd = GenerateRandomString(10);
-            return $"{tenantId}_unity_{timestamp}_{rnd}";
-        }
 
         public static string CombineTokensWithSpecialCheckHelper(string current, string[] tokens)
         {
