@@ -22,6 +22,8 @@ namespace Chatcloud.CodeBase.UI
 
         public void SendRequest(string message)
         {
+            if(Receiver.IsWaitingForResponse) return;
+            
             _ = ChatcloudApi.SendMessageToBackend(message, Receiver.ReceiveMessage, Receiver.OnBeginRequest, Receiver.OnCompleteRequest);
         }
 

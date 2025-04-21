@@ -30,12 +30,15 @@ namespace Chatcloud.CodeBase.UI
             button.onClick.RemoveAllListeners();
         }
 
-        public void SendRequest(string message)
+        public async void SendRequest(string message)
         {
-            _ = ChatcloudApi.SendMessageToBackend(message, Receiver.ReceiveMessage, Receiver.OnBeginRequest,
+            _inputField.interactable = false;
+            _inputField.text = string.Empty;
+            
+            await ChatcloudApi.SendMessageToBackend(message, Receiver.ReceiveMessage, Receiver.OnBeginRequest,
                 Receiver.OnCompleteRequest);
 
-            _inputField.text = string.Empty;
+            _inputField.interactable = true;
         }
     }
 }

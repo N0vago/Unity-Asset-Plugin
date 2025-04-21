@@ -12,6 +12,8 @@ namespace Chatcloud.CodeBase.UI
         
         public override void OnBeginRequest()
         {
+            IsWaitingForResponse = true;
+            
             _currentChatMessage = Instantiate(chatMessagePrefab, transform);
             
             _currentChatMessage.ShowTypingDots();
@@ -19,7 +21,7 @@ namespace Chatcloud.CodeBase.UI
 
         public override void ReceiveMessage(string response)
         {
-            _currentChatMessage.SetText(TextUtils.ConvertMarkdownToHtml(response));
+            _currentChatMessage.SetText(TextUtils.ConvertMarkdownToTmp(response));
             
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         }

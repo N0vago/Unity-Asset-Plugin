@@ -6,7 +6,6 @@ namespace Chatcloud.CodeBase.Utils
 {
     public static class TextUtils
     {
-
         public static string CombineTokensWithSpecialCheckHelper(string current, string[] tokens)
         {
             var result = new StringBuilder(current);
@@ -20,37 +19,36 @@ namespace Chatcloud.CodeBase.Utils
             return result.ToString();
         }
 
-        public static string ConvertMarkdownToHtml(string text)
+        public static string ConvertMarkdownToTmp(string text)
         {
-            text = Regex.Replace(text, @"^(#{1,6})\s*(.*)$", match =>
-            {
-                int level = match.Groups[1].Value.Length;
-                string content = match.Groups[2].Value.Trim();
-                return $"<h{level}>{content}</h{level}>";
-            }, RegexOptions.Multiline);
-            
-            text = Regex.Replace(text, @"\*\*(.*?)\*\*", "<span style=\"font-weight:600;\">$1</span>");
-            
-            text = text.Replace("Ƿ", "<br>");
-            
-            text = Regex.Replace(text, @"(\r\n|\r|\n)", "<br>");
-            
-            text = Regex.Replace(text, @"\[([^\]]+)\]\((https?:\/\/[^\)]+)\)",
-                "<a href=\"$2\" target=\"_blank\" rel=\"noopener noreferrer\">$1</a>");
-            
-            text = Regex.Replace(text, @"(^|>)(\s*)((https?:\/\/|www\.)[^\s<]+)", match =>
-            {
-                string prefix = match.Groups[1].Value;
-                string spacing = match.Groups[2].Value;
-                string url = match.Groups[3].Value;
-                if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                    url = "http://" + url;
-                return
-                    $"{prefix}{spacing}<a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{match.Groups[3].Value}</a>";
-            }, RegexOptions.IgnoreCase);
-            // Emails.
-            text = Regex.Replace(text, @"([\w\.-]+@[A-Za-z0-9\.-]+\.[A-Za-z]{2,})", "<a href=\"mailto:$1\">$1</a>");
-            return text;
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+
+            string result = text;
+
+            // Заголовки: #, ##, ###
+            result = Regex.Replace(result, @"^# (.+)$", "<size=150%><b>$1</b></size>", RegexOptions.Multiline);
+            result = Regex.Replace(result, @"^## (.+)$", "<size=130%><b>$1</b></size>", RegexOptions.Multiline);
+            result = Regex.Replace(result, @"^### (.+)$", "<size=115%><b>$1</b></size>", RegexOptions.Multiline);
+
+            // Ссылки [текст](url) → курсивный текст (можно кастомизировать)
+            result = Regex.Replace(result, @"\[(.+?)\]\((.+?)\)", "<i>$1</i>");
+
+            // Жирный: **text**
+            result = Regex.Replace(result, @"\*\*(.+?)\*\*", "<b>$1</b>");
+
+            // Всё остальное в *text* или _text_ → жирный (кроме уже заменённой ссылки)
+            result = Regex.Replace(result, @"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", "<b>$1</b>");
+            result = Regex.Replace(result, @"_(.+?)_", "<b>$1</b>");
+
+            // Код: `text`
+            result = Regex.Replace(result, @"`(.+?)`", "<color=#aaaaaa><i>$1</i></color>");
+
+            // Списки: - item / * item / + item
+            result = Regex.Replace(result, @"^(\s*)[-*+] (.+)$", "$1• $2", RegexOptions.Multiline);
+
+            result = result.Replace("\\", "");
+
+            return result;
         }
     }
 }

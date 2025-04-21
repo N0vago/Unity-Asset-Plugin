@@ -4,6 +4,7 @@ namespace Chatcloud.CodeBase.Infrastructure
 {
     public abstract class ReceiverBehavior : MonoBehaviour, IRequestReceiver
     {
+        public bool IsWaitingForResponse { get; set; }
         public abstract void OnBeginRequest();
 
         public abstract void ReceiveMessage(string response);

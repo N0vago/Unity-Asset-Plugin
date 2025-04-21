@@ -50,9 +50,11 @@ namespace Chatcloud.CodeBase.Networking
                 
                 if (!string.IsNullOrEmpty(line.reply))
                 {
-                    onToken?.Invoke(TextUtils.ConvertMarkdownToHtml(line.reply));
+                    onToken?.Invoke(TextUtils.ConvertMarkdownToTmp(line.reply));
                 }
             }
+            
+            onComplete?.Invoke();
         }
 
         private static string GenerateRandomString(int length)
@@ -84,6 +86,7 @@ namespace Chatcloud.CodeBase.Networking
                 userId = PlayerPrefs.GetString(Key);
             }
             
+            Debug.Log(userId);
             return userId;
         }
 
