@@ -10,9 +10,13 @@ namespace Chatcloud.CodeBase.UI
         [SerializeField] private ChatMessage chatMessagePrefab;
         private ChatMessage _currentChatMessage;
         
-        public override void OnBeginRequest()
+        public override void OnBeginRequest(string message)
         {
             IsWaitingForResponse = true;
+
+            _currentChatMessage = Instantiate(chatMessagePrefab, transform);
+            
+            _currentChatMessage.SetText(message);
             
             _currentChatMessage = Instantiate(chatMessagePrefab, transform);
             

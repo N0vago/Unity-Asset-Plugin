@@ -20,10 +20,10 @@ namespace Chatcloud.CodeBase.Networking
             _backendData = Resources.Load<BackendData>("BackendData");
         }
         
-        public static async Task SendMessageToBackend(string msg, Action<string> onToken, Action onBegin = null,
+        public static async Task SendMessageToBackend(string msg, Action<string> onToken, Action<string> onBegin = null,
             Action onComplete = null)
         {
-            onBegin?.Invoke();
+            onBegin?.Invoke(msg);
             
             Payload payload = new Payload(GenerateUserId(_backendData.tenate), msg);
             string jsonPayload = JsonUtility.ToJson(payload);

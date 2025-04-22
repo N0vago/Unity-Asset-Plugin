@@ -3,7 +3,7 @@
     public interface IRequestReceiver
     {
         bool IsWaitingForResponse { get; set; }
-        void OnBeginRequest();
+        void OnBeginRequest(string message);
         void ReceiveMessage(string response);
 
         void OnCompleteRequest();
