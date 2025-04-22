@@ -1,23 +1,9 @@
-using System;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Chatcloud.CodeBase.Utils
 {
     public static class TextUtils
     {
-        public static string CombineTokensWithSpecialCheckHelper(string current, string[] tokens)
-        {
-            var result = new StringBuilder(current);
-            foreach (var token in tokens)
-            {
-                if (result.Length > 0)
-                    result.Append(" ");
-                result.Append(token);
-            }
-
-            return result.ToString();
-        }
 
         public static string ConvertMarkdownToTmp(string text)
         {

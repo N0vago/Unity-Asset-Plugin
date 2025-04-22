@@ -10,9 +10,29 @@ namespace Chatcloud.CodeBase.UI
     public class ChatMessage : MonoBehaviour
     {
         [SerializeField] private TMP_Text messageText;
+        [SerializeField] private Image logo;
+        [SerializeField] private Image background;
 
         private Coroutine _coroutine;
         private RectTransform _parent;
+
+        public Sprite Logo
+        {
+            get => logo.sprite;
+            set => logo.sprite = value;
+        }
+
+        public Color BackgroundColor
+        {
+            get => background.color;
+            set => background.color = value;
+        }
+
+        public Color FontColor
+        {
+            get => messageText.color;
+            set => messageText.color = value;
+        }
 
         private void OnEnable()
         {

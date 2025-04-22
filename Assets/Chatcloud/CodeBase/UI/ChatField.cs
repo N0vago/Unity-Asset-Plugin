@@ -28,7 +28,7 @@ namespace Chatcloud.CodeBase.UI
 
         public override void OnCompleteRequest()
         {
-            
+            IsWaitingForResponse = false;
         }
     }
 }
