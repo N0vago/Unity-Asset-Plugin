@@ -44,7 +44,7 @@ namespace Chatcloud.CodeBase.UI
         {
             if(Receiver.IsWaitingForResponse) return;
             
-            _ = ChatcloudApi.SendMessageToBackend(message, Receiver.ReceiveMessage, Receiver.OnBeginRequest, Receiver.OnCompleteRequest);
+            _ = ChatcloudApi.SendMessageToBackend(message, Receiver.OnReceiveMessage, Receiver.OnBeginRequest, Receiver.OnCompleteRequest);
         }
 
         private void OnEnable()

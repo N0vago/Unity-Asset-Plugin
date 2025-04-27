@@ -7,6 +7,10 @@ namespace Chatcloud.CodeBase.ScriptableObjects
     [CreateAssetMenu(fileName = "WidgetSettings", menuName = "Widget/Settings", order = 1)]
     public class WidgetSettings : ScriptableObject
     {
+        [Header("Backend settings")]
+        public string endpoint;
+        public string tenate;
+        
         [Header("Header settings")]
         public Sprite headerLogo;
         public Color headerColor = Color.black;

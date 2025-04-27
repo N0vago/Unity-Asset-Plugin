@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Chatcloud.CodeBase.Infrastructure
 {
@@ -7,7 +8,7 @@ namespace Chatcloud.CodeBase.Infrastructure
         public bool IsWaitingForResponse { get; set; }
         public abstract void OnBeginRequest(string message);
 
-        public abstract void ReceiveMessage(string response);
+        public abstract void OnReceiveMessage(string response);
 
         public abstract void OnCompleteRequest();
     }

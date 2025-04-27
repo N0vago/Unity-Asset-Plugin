@@ -13,6 +13,10 @@ namespace Chatcloud.CodeBase.Editor
         private WidgetSettings _settings;
 
         private SerializedObject _serializedSettings;
+
+        private SerializedProperty _tenateProp;
+        private SerializedProperty _endpointProp;
+        
         private SerializedProperty _headerLogoProp;
         private SerializedProperty _headerColorProp;
         private SerializedProperty _headerFontColorProp;
@@ -31,15 +35,15 @@ namespace Chatcloud.CodeBase.Editor
         private SerializedProperty _sendButtonProp;
 
 
-        [MenuItem("AI Widget/Settings Editor")]
+        [MenuItem("Chatcloud/Settings")]
         public static void ShowWindow()
         {
-            GetWindow<WidgetSettingEditor>("AI Widget Settings");
+            GetWindow<WidgetSettingEditor>("Chat settings");
         }
 
         private void OnEnable()
         {
-            _settings = AssetDatabase.LoadAssetAtPath<WidgetSettings>("Assets/Resources/WidgetSettings.asset");
+            _settings = AssetDatabase.LoadAssetAtPath<WidgetSettings>("Assets/Chatcloud/WidgetSettings.asset");
             if (_settings == null)
             {
                 _settings = CreateInstance<WidgetSettings>();
@@ -48,6 +52,9 @@ namespace Chatcloud.CodeBase.Editor
             }
 
             _serializedSettings = new SerializedObject(_settings);
+
+            _tenateProp = _serializedSettings.FindProperty("tenate");
+            _endpointProp = _serializedSettings.FindProperty("endpoint");
             
             _headerLogoProp = _serializedSettings.FindProperty("headerLogo");
             _headerColorProp = _serializedSettings.FindProperty("headerColor");
@@ -79,11 +86,16 @@ namespace Chatcloud.CodeBase.Editor
             
             _serializedSettings.Update();
 
-            EditorGUILayout.LabelField("AI Widget Settings", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Chat Settings", EditorStyles.boldLabel);
+
+            EditorGUILayout.PropertyField(_endpointProp, new GUIContent("Endpoint"));
+            EditorGUILayout.PropertyField(_tenateProp, new GUIContent("Tenate"));
+            
             EditorGUILayout.PropertyField(_headerLogoProp, new GUIContent("Header logo"));
             EditorGUILayout.PropertyField(_headerColorProp, new GUIContent("Header color"));
             EditorGUILayout.PropertyField(_headerFontColorProp, new GUIContent("Header font color"));
             EditorGUILayout.PropertyField(_headerTextProp, new GUIContent("Header text"));
+            
             
             EditorGUILayout.PropertyField(_aiMessageLogoProp, new GUIContent("AI message logo"));
             EditorGUILayout.PropertyField(_aiMessageColorProp, new GUIContent("AI message color"));
@@ -97,7 +109,7 @@ namespace Chatcloud.CodeBase.Editor
             EditorGUILayout.PropertyField(_requestSampleColorProp, new GUIContent("Request sample color"));
             
             EditorGUILayout.PropertyField(_suggestedQuestionsProp, new GUIContent("Questions"), true);
-
+            
             _serializedSettings.ApplyModifiedProperties();
             
             if (GUILayout.Button("Apply settings"))

@@ -12,20 +12,23 @@ namespace Chatcloud.CodeBase.UI
     {
         [SerializeField] private WidgetSettings settings;
         
-        [SerializeField] private RequestSample requestSamplePrefab;
-        
-        [SerializeField] private ChatMessage aiChatMessagePrefab;
-        [SerializeField] private ChatMessage userChatMessagePrefab;
-        
+        [Header("Header setup")]
         [SerializeField] private Image headerLogo;
         [SerializeField] private TMP_Text headerText;
         [SerializeField] private Image headerBackgroundImage;
         
-        [SerializeField] private List<Image> backgroundImages;
-        [SerializeField] private List<TMP_Text> widgetTexts;
-        [SerializeField] private Image sendButton;
-
+        [Header("Chat messages setup")]
+        [SerializeField] private ChatMessage aiChatMessagePrefab;
+        [SerializeField] private ChatMessage userChatMessagePrefab;
+        
+        [Header("Request samples setup")]
+        [SerializeField] private RequestSample requestSamplePrefab;
         [SerializeField] private Transform requestSamplesField;
+        
+        [Header("Other")]
+        [SerializeField] private List<Image> otherImages;
+        [SerializeField] private List<TMP_Text> otherTexts;
+        [SerializeField] private Image sendButton;
         
         public void ApplySettings()
         {
@@ -51,8 +54,8 @@ namespace Chatcloud.CodeBase.UI
                 requestSamplePrefab.FontColor = settings.fontColor;
             }
 
-            if (backgroundImages != null)
-                backgroundImages.ForEach(image => image.color = settings.backgroundsColor);
+            if (otherImages != null)
+                otherImages.ForEach(image => image.color = settings.backgroundsColor);
 
             if (headerBackgroundImage != null)
                 headerBackgroundImage.color = settings.headerColor;
@@ -68,8 +71,8 @@ namespace Chatcloud.CodeBase.UI
                 sendButton.sprite = settings.sendButton;
             }
             
-            if(widgetTexts != null)
-                widgetTexts.ForEach( text => text.color = settings.fontColor);
+            if(otherTexts != null)
+                otherTexts.ForEach( text => text.color = settings.fontColor);
                 
 
             foreach (var question in settings.suggestedQuestions)

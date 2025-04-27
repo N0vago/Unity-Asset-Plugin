@@ -1,4 +1,5 @@
-﻿using Chatcloud.CodeBase.Infrastructure;
+﻿using System;
+using Chatcloud.CodeBase.Infrastructure;
 using Chatcloud.CodeBase.Networking;
 using TMPro;
 using UnityEngine;
@@ -30,15 +31,18 @@ namespace Chatcloud.CodeBase.UI
             button.onClick.RemoveAllListeners();
         }
 
+        private void Update()
+        {
+            if (Receiver.IsWaitingForResponse) _inputField.interactable = false;
+            _inputField.interactable = true;
+        }
+
         public async void SendRequest(string message)
         {
-            _inputField.interactable = false;
             _inputField.text = string.Empty;
             
-            await ChatcloudApi.SendMessageToBackend(message, Receiver.ReceiveMessage, Receiver.OnBeginRequest,
+            await ChatcloudApi.SendMessageToBackend(message, Receiver.OnReceiveMessage, Receiver.OnBeginRequest,
                 Receiver.OnCompleteRequest);
-
-            _inputField.interactable = true;
         }
     }
 }

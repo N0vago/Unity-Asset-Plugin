@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chatcloud.CodeBase.ScriptableObjects;
 using Chatcloud.CodeBase.Utils;
+using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
 
@@ -12,25 +13,33 @@ namespace Chatcloud.CodeBase.Networking
 {
     public static class ChatcloudApi
     {
-        private static BackendData _backendData;
+        private static readonly string Tenate;
+        private static readonly string Endpoint;
         private const string Key = "user_id";
 
         static ChatcloudApi()
         {
-            _backendData = Resources.Load<BackendData>("BackendData");
+            Tenate = AssetDatabase.LoadAssetAtPath<WidgetSettings>("Assets/Chatcloud/WidgetSettings.asset").tenate;
+            Endpoint = AssetDatabase.LoadAssetAtPath<WidgetSettings>("Assets/Chatcloud/WidgetSettings.asset").endpoint;
         }
         
         public static async Task SendMessageToBackend(string msg, Action<string> onToken, Action<string> onBegin = null,
             Action onComplete = null)
         {
+            if (string.IsNullOrEmpty(Tenate) || string.IsNullOrEmpty(Endpoint))
+            {
+                Debug.LogError("Tenate or endpoint wasn't set");
+                return;
+            }
+            
             onBegin?.Invoke(msg);
             
-            Payload payload = new Payload(GenerateUserId(_backendData.tenate), msg);
+            Payload payload = new Payload(GenerateUserId(Tenate), msg);
             string jsonPayload = JsonUtility.ToJson(payload);
 
             using HttpClient client = new HttpClient();
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _backendData.endpoint)
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, Endpoint)
             {
                 Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json")
             };

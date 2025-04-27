@@ -1,8 +1,6 @@
-﻿using System;
-using Chatcloud.CodeBase.Infrastructure;
+﻿using Chatcloud.CodeBase.Infrastructure;
 using Chatcloud.CodeBase.Utils;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Chatcloud.CodeBase.UI
@@ -25,7 +23,7 @@ namespace Chatcloud.CodeBase.UI
             CreateAIMessage();
         }
 
-        public override void ReceiveMessage(string response)
+        public override void OnReceiveMessage(string response)
         {
             _currentChatMessage.SetText(TextUtils.ConvertMarkdownToTmp(response));
             
