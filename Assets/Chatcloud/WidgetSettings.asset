@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b3ca681a814569844d5ccce35f442e, type: 3}
   m_Name: WidgetSettings
   m_EditorClassIdentifier: 
-  tenate: stvx-234-001
+  tenant: stvx-234-001
   endpoint: https://cc-stvx-234-001-be-2786182950.europe-central2.run.app/api/v1/chat
   headerLogo: {fileID: 21300000, guid: 5e4db88cc0d1b468986820e48f752c32, type: 3}
   headerColor: {r: 0, g: 0, b: 0, a: 1}
-  headerFontColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
+  headerFontColor: {r: 0.16862746, g: 0.6431373, b: 0.91372555, a: 1}
   headerText: Chatcloud AI
   aiMessageLogo: {fileID: 21300000, guid: 5e4db88cc0d1b468986820e48f752c32, type: 3}
-  aiMessageColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  userMessageColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
-  requestSampleColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
+  aiMessageColor: {r: 0.9333334, g: 0.9333334, b: 0.9333334, a: 1}
+  aiMessageFontColor: {r: 0, g: 0, b: 0, a: 1}
+  userMessageColor: {r: 0.83921576, g: 0.9607844, b: 1, a: 1}
+  userMessageFontColor: {r: 0, g: 0, b: 0, a: 1}
+  faqSampleColor: {r: 0.83921576, g: 0.9607844, b: 1, a: 1}
+  faqSampleFontColor: {r: 0, g: 0, b: 0, a: 1}
   suggestedQuestions:
   - What is Chatcloud?
   - What can i use it for?
@@ -30,5 +33,5 @@ MonoBehaviour:
   - Which channels are supported?
   - Is it multilingual?
   backgroundsColor: {r: 1, g: 1, b: 1, a: 1}
-  fontColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
+  inputFieldFontColor: {r: 0.56078434, g: 0.5686275, b: 0.56078434, a: 1}
   sendButton: {fileID: 21300000, guid: 2d630325715e7034a9816c369c969e06, type: 3}

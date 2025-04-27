@@ -17,7 +17,7 @@ namespace Chatcloud.CodeBase.Networking
     public static class ChatcloudApi
     {
         // Tenant identifier for the backend.
-        private static readonly string Tenate;
+        private static readonly string Tenant;
 
         // Backend API endpoint URL.
         private static readonly string Endpoint;
@@ -31,7 +31,7 @@ namespace Chatcloud.CodeBase.Networking
         static ChatcloudApi()
         {
             var settings = AssetDatabase.LoadAssetAtPath<WidgetSettings>("Assets/Chatcloud/WidgetSettings.asset");
-            Tenate = settings.tenate;
+            Tenant = settings.tenant;
             Endpoint = settings.endpoint;
         }
 
@@ -45,7 +45,7 @@ namespace Chatcloud.CodeBase.Networking
         public static async Task SendMessageToBackend(string msg, Action<string> onToken, Action<string> onBegin = null,
             Action onComplete = null)
         {
-            if (string.IsNullOrEmpty(Tenate) || string.IsNullOrEmpty(Endpoint))
+            if (string.IsNullOrEmpty(Tenant) || string.IsNullOrEmpty(Endpoint))
             {
                 Debug.LogError("Tenate or endpoint wasn't set");
                 return;
@@ -53,7 +53,7 @@ namespace Chatcloud.CodeBase.Networking
 
             onBegin?.Invoke(msg);
 
-            Payload payload = new Payload(GenerateUserId(Tenate), msg);
+            Payload payload = new Payload(GenerateUserId(Tenant), msg);
             string jsonPayload = JsonUtility.ToJson(payload);
 
             using HttpClient client = new HttpClient();

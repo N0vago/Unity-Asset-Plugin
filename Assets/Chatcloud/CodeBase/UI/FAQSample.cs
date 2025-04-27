@@ -11,7 +11,7 @@ namespace Chatcloud.CodeBase.UI
     /// <summary>
     /// Handles sending sample requests to the backend and updating UI elements.
     /// </summary>
-    public class RequestSample : MonoBehaviour, IRequestSender
+    public class FAQSample : MonoBehaviour, IRequestSender
     {
         [Tooltip("Text component displaying the sample message.")]
         [SerializeField] private TMP_Text sampleText;

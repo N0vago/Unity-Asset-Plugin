@@ -32,20 +32,21 @@ namespace Chatcloud.CodeBase.UI
 
         [Tooltip("Prefab for user chat messages.")]
         [SerializeField] private ChatMessage userChatMessagePrefab;
-
+        
         [Header("Request samples setup")]
         [Tooltip("Prefab for request sample UI elements.")]
-        [SerializeField] private RequestSample requestSamplePrefab;
-
+        [SerializeField] private FAQSample faqSamplePrefab;
+        
         [Tooltip("Parent transform for request sample UI elements.")]
-        [SerializeField] private Transform requestSamplesField;
+        [SerializeField] private Transform faqSamplesField;
 
         [Header("Other")]
         [Tooltip("List of additional images for styling.")]
         [SerializeField] private List<Image> otherImages;
 
+        [FormerlySerializedAs("otherTexts")]
         [Tooltip("List of additional text elements for styling.")]
-        [SerializeField] private List<TMP_Text> otherTexts;
+        [SerializeField] private List<TMP_Text> inputFieldTexts;
 
         [Tooltip("Image for the send button.")]
         [SerializeField] private Image sendButton;
@@ -60,21 +61,21 @@ namespace Chatcloud.CodeBase.UI
 
             if (aiChatMessagePrefab != null)
             {
-                aiChatMessagePrefab.FontColor = settings.fontColor;
+                aiChatMessagePrefab.FontColor = settings.aiMessageFontColor;
                 aiChatMessagePrefab.BackgroundColor = settings.aiMessageColor;
                 aiChatMessagePrefab.Logo = settings.aiMessageLogo;
             }
 
             if (userChatMessagePrefab != null)
             {
-                userChatMessagePrefab.FontColor = settings.fontColor;
+                userChatMessagePrefab.FontColor = settings.userMessageFontColor;
                 userChatMessagePrefab.BackgroundColor = settings.userMessageColor;
             }
 
-            if (requestSamplePrefab != null)
+            if (faqSamplePrefab != null)
             {
-                requestSamplePrefab.BackgroundColor = settings.requestSampleColor;
-                requestSamplePrefab.FontColor = settings.fontColor;
+                faqSamplePrefab.BackgroundColor = settings.faqSampleColor;
+                faqSamplePrefab.FontColor = settings.faqSampleFontColor;
             }
 
             if (otherImages != null)
@@ -92,14 +93,14 @@ namespace Chatcloud.CodeBase.UI
             if (sendButton != null)
                 sendButton.sprite = settings.sendButton;
 
-            if (otherTexts != null)
-                otherTexts.ForEach(text => text.color = settings.fontColor);
+            if (inputFieldTexts != null)
+                inputFieldTexts.ForEach(text => text.color = settings.inputFieldFontColor);
 
             foreach (var question in settings.suggestedQuestions)
             {
-                if (requestSamplesField.GetComponentsInChildren<RequestSample>()
+                if (faqSamplesField.GetComponentsInChildren<FAQSample>()
                     .Any(sample => sample.Text == question)) continue;
-                RequestSample sample = Instantiate(requestSamplePrefab, requestSamplesField);
+                FAQSample sample = Instantiate(faqSamplePrefab, faqSamplesField);
                 sample.Text = question;
             }
         }
@@ -109,9 +110,9 @@ namespace Chatcloud.CodeBase.UI
         /// </summary>
         public void ClearSamples()
         {
-            for (int i = requestSamplesField.childCount - 1; i >= 0; i--)
+            for (int i = faqSamplesField.childCount - 1; i >= 0; i--)
             {
-                Transform child = requestSamplesField.GetChild(i);
+                Transform child = faqSamplesField.GetChild(i);
                 DestroyImmediate(child.gameObject);
             }
         }
