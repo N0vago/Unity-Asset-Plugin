@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b3ca681a814569844d5ccce35f442e, type: 3}
   m_Name: WidgetSettings
   m_EditorClassIdentifier: 
-  endpoint: https://cc-stvx-234-001-be-2786182950.europe-central2.run.app/api/v1/chat
   tenate: stvx-234-001
+  endpoint: https://cc-stvx-234-001-be-2786182950.europe-central2.run.app/api/v1/chat
   headerLogo: {fileID: 21300000, guid: 5e4db88cc0d1b468986820e48f752c32, type: 3}
   headerColor: {r: 0, g: 0, b: 0, a: 1}
   headerFontColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
   headerText: Chatcloud AI
-  aiMessageLogo: {fileID: 21300000, guid: f29e8be63eebe40959b4d38d2c630ceb, type: 3}
+  aiMessageLogo: {fileID: 21300000, guid: 5e4db88cc0d1b468986820e48f752c32, type: 3}
   aiMessageColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   userMessageColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
   requestSampleColor: {r: 0.18039216, g: 0.6392157, b: 0.9058824, a: 1}
@@ -31,4 +31,4 @@ MonoBehaviour:
   - Is it multilingual?
   backgroundsColor: {r: 1, g: 1, b: 1, a: 1}
   fontColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
-  sendButton: {fileID: 21300000, guid: 52266d8fd7d6c48c2a8924b7c177faca, type: 3}
+  sendButton: {fileID: 21300000, guid: 2d630325715e7034a9816c369c969e06, type: 3}
