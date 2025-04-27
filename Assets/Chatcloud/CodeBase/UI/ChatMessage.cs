@@ -18,8 +18,23 @@ namespace Chatcloud.CodeBase.UI
 
         public Sprite Logo
         {
-            get => logo.sprite;
-            set => logo.sprite = value;
+            get
+            {
+                if (logo != null)
+                {
+                    return logo.sprite;
+                }
+                else
+                {
+                    Debug.LogError("Logo for this message wasn't set");
+                    return null;
+                }
+            }
+            set
+            {
+                if(logo)
+                    logo.sprite = value;
+            }
         }
 
         public Color BackgroundColor

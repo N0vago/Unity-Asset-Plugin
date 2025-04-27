@@ -13,9 +13,12 @@ namespace Chatcloud.CodeBase.ScriptableObjects
         public Color headerFontColor = Color.blue;
         public string headerText = "ChatcloudAI";
         
-        [Header("Chat message settings")]
-        public Sprite messageLogo;
-        public Color messageColor = Color.grey; 
+        [Header("AI chat message settings")]
+        public Sprite aiMessageLogo;
+        public Color aiMessageColor = Color.grey;
+
+        [Header("User chat message settings")] 
+        public Color userMessageColor = Color.blue;
         
         [Header("Request sample settings")]
         public Color requestSampleColor = Color.cyan;

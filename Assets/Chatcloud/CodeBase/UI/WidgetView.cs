@@ -3,6 +3,7 @@ using System.Linq;
 using Chatcloud.CodeBase.ScriptableObjects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Chatcloud.CodeBase.UI
@@ -12,7 +13,9 @@ namespace Chatcloud.CodeBase.UI
         [SerializeField] private WidgetSettings settings;
         
         [SerializeField] private RequestSample requestSamplePrefab;
-        [SerializeField] private ChatMessage chatMessagePrefab;
+        
+        [SerializeField] private ChatMessage aiChatMessagePrefab;
+        [SerializeField] private ChatMessage userChatMessagePrefab;
         
         [SerializeField] private Image headerLogo;
         [SerializeField] private TMP_Text headerText;
@@ -29,11 +32,17 @@ namespace Chatcloud.CodeBase.UI
             if (headerLogo != null)
                 headerLogo.sprite = settings.headerLogo;
 
-            if (chatMessagePrefab != null)
+            if (aiChatMessagePrefab != null)
             {
-                chatMessagePrefab.FontColor = settings.fontColor;
-                chatMessagePrefab.BackgroundColor = settings.messageColor;
-                chatMessagePrefab.Logo = settings.messageLogo;
+                aiChatMessagePrefab.FontColor = settings.fontColor;
+                aiChatMessagePrefab.BackgroundColor = settings.aiMessageColor;
+                aiChatMessagePrefab.Logo = settings.aiMessageLogo;
+            }
+
+            if (userChatMessagePrefab != null)
+            {
+                userChatMessagePrefab.FontColor = settings.fontColor;
+                userChatMessagePrefab.BackgroundColor = settings.userMessageColor;
             }
 
             if (requestSamplePrefab != null)

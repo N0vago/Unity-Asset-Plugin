@@ -18,8 +18,10 @@ namespace Chatcloud.CodeBase.Editor
         private SerializedProperty _headerFontColorProp;
         private SerializedProperty _headerTextProp;
         
-        private SerializedProperty _messageLogoProp;
-        private SerializedProperty _messageColorProp;
+        private SerializedProperty _aiMessageLogoProp;
+        private SerializedProperty _aiMessageColorProp;
+
+        private SerializedProperty _userMessageColorProp;
         
         private SerializedProperty _requestSampleColorProp;
         private SerializedProperty _suggestedQuestionsProp;
@@ -52,8 +54,10 @@ namespace Chatcloud.CodeBase.Editor
             _headerFontColorProp = _serializedSettings.FindProperty("headerFontColor");
             _headerTextProp = _serializedSettings.FindProperty("headerText");
             
-            _messageLogoProp = _serializedSettings.FindProperty("messageLogo");
-            _messageColorProp = _serializedSettings.FindProperty("messageColor");
+            _aiMessageLogoProp = _serializedSettings.FindProperty("aiMessageLogo");
+            _aiMessageColorProp = _serializedSettings.FindProperty("aiMessageColor");
+
+            _userMessageColorProp = _serializedSettings.FindProperty("userMessageColor");
             
             _backgroundColorProp = _serializedSettings.FindProperty("backgroundsColor");
             _fontColorProp = _serializedSettings.FindProperty("fontColor");
@@ -81,8 +85,10 @@ namespace Chatcloud.CodeBase.Editor
             EditorGUILayout.PropertyField(_headerFontColorProp, new GUIContent("Header font color"));
             EditorGUILayout.PropertyField(_headerTextProp, new GUIContent("Header text"));
             
-            EditorGUILayout.PropertyField(_messageLogoProp, new GUIContent("Message logo"));
-            EditorGUILayout.PropertyField(_messageColorProp, new GUIContent("Message color"));
+            EditorGUILayout.PropertyField(_aiMessageLogoProp, new GUIContent("AI message logo"));
+            EditorGUILayout.PropertyField(_aiMessageColorProp, new GUIContent("AI message color"));
+
+            EditorGUILayout.PropertyField(_userMessageColorProp, new GUIContent("User message color"));
             
             EditorGUILayout.PropertyField(_backgroundColorProp, new GUIContent("Background color"));
             EditorGUILayout.PropertyField(_fontColorProp, new GUIContent("Fonts color"));
